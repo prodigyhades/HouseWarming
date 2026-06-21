@@ -1,56 +1,381 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Under Construction</title>
+    <title>Gruhapravesam | July 3rd, 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --vermilion: #991B1B;
+            --marigold: #F59E0B;
+            --cream: #FEFBF3;
+            --charcoal: #1F2937;
+        }
         body {
-            background-color: #0B132B; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--cream);
+            color: var(--charcoal);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            transition: background-color 1.5s ease;
+        }
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Persistent Pill Switch */
+        .lang-switch {
+            background: rgba(254, 251, 243, 0.9);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(153, 27, 27, 0.1);
+        }
+        .lang-btn {
+            transition: all 0.3s ease;
+        }
+        .lang-btn.active {
+            background-color: var(--vermilion);
+            color: var(--cream);
+        }
+        .lang-btn.inactive {
+            color: var(--charcoal);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            color: #E0E1DD; 
-        }
-        .container {
             text-align: center;
-            padding: 20px;
+            padding: 2rem;
+            background-image: url('assets/hero-bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: 1;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(254, 251, 243, 0.3), rgba(254, 251, 243, 0.95));
+            z-index: -1;
+        }
+        .hero-glow {
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+        }
+        
+        /* Floating Action Button */
+        .fab {
+            background: linear-gradient(135deg, var(--vermilion), #7f1d1d);
+            box-shadow: 0 10px 15px -3px rgba(153, 27, 27, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .fab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(153, 27, 27, 0.5);
+        }
+
+        /* Calf Animation */
+        #calf-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 80px;
+            height: 80px;
+            z-index: 50;
+            pointer-events: none;
+            transition: transform 0.2s ease-out;
+        }
+        #calf-img {
             width: 100%;
-            max-width: 800px; 
-            box-sizing: border-box;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
         }
-        img {
-            width: 70%; 
-            max-width: 750px; 
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+
+        /* Light up effect */
+        body.light-up {
+            background-color: #fff9e6;
         }
-        h1 {
-            margin-top: 25px;
-            font-size: 2.5rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            margin-bottom: 5px; /* Added to keep the name nicely spaced below */
+        .light-up-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 100vmax;
+            height: 100vmax;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, rgba(254, 251, 243, 0) 70%);
+            border-radius: 50%;
+            z-index: 0;
+            pointer-events: none;
+            transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
-        .signature {
-            font-size: 1.2rem;
-            color: #8D99AE; /* Slightly softer color for a clean signature look */
-            margin-top: 0;
+        body.light-up .light-up-overlay {
+            transform: translate(-50%, -50%) scale(2);
+        }
+
+        /* Subtle animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up {
+            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        
+        .ornament {
+            width: 120px;
+            opacity: 0.8;
+            margin: 1.5rem auto;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
-<body>
+<body class="antialiased relative">
+    <div class="light-up-overlay"></div>
 
-    <div class="container">
-        <img src="building.gif" alt="Tom building a house">
-        <h1>almost done, just adding the finishing touches :D</h1>
-        <p class="signature">- Venky</p>
+    <!-- Bilingual Pill Switch -->
+    <div class="fixed top-4 right-4 z-50">
+        <div class="lang-switch rounded-full flex p-1 cursor-pointer">
+            <button id="lang-en" class="lang-btn active px-4 py-1.5 rounded-full text-sm font-medium focus:outline-none" onclick="setLanguage('en')">English</button>
+            <button id="lang-te" class="lang-btn inactive px-4 py-1.5 rounded-full text-sm font-medium focus:outline-none" onclick="setLanguage('te')">తెలుగు</button>
+        </div>
     </div>
 
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="z-10 w-full max-w-lg mx-auto opacity-0 animate-fade-up">
+            <div class="text-[#F59E0B] mb-4">
+                <svg class="w-12 h-12 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2L2 12h3v8h14v-8h3L12 2zm0 2.83l5 5V18h-2v-4H9v4H7v-8.17l5-5z"/>
+                </svg>
+            </div>
+            <h1 id="heroTitle" class="text-5xl md:text-6xl font-bold text-[#991B1B] mb-4 hero-glow tracking-wide">Gruhapravesam</h1>
+            <p id="heroSubtitle" class="text-lg md:text-xl text-[#1F2937] font-medium mb-8">Nagaraj, Hema & Venky Warmly Welcome You</p>
+            
+            <div class="inline-block border-y border-[#991B1B]/30 py-4 px-8 mt-4 mb-8 glass-card rounded-2xl">
+                <p id="date" class="text-2xl serif font-semibold text-[#991B1B]">July 3rd, 2026</p>
+                <p id="time" class="text-xl serif font-medium text-[#F59E0B] mt-1">07:02 AM</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rituals & Location -->
+    <section class="py-20 px-6 z-10 relative">
+        <div class="max-w-lg mx-auto text-center opacity-0 animate-fade-up delay-100" id="rituals-anim">
+            <h2 id="ritualsHeading" class="text-3xl font-bold text-[#991B1B] mb-6">Sacred Rituals</h2>
+            <p id="ritualsText" class="text-gray-700 leading-relaxed mb-6 text-lg">The morning will commence with auspicious prayers and traditional blessing rituals to invite peace and prosperity into our new dwelling.</p>
+            <p id="dressCode" class="text-sm font-medium text-[#F59E0B] italic p-4 bg-[#F59E0B]/10 rounded-xl mb-12">Traditional attire is highly encouraged to grace the occasion.</p>
+            
+            <div class="w-16 h-[1px] bg-[#991B1B]/30 mx-auto my-12"></div>
+
+            <h2 id="addressHeading" class="text-3xl font-bold text-[#991B1B] mb-4">Our New Home</h2>
+            <p id="addressDetails" class="text-xl serif text-gray-800 mb-8 font-medium">Flat No 2-407, Omsree Delight</p>
+            
+            <div class="rounded-2xl overflow-hidden shadow-lg border border-[#F59E0B]/20 mb-8 glass-card p-2">
+                <iframe src="https://maps.google.com/maps?q=Omsree%20Delight,%20Hyderabad&t=&z=15&ie=UTF8&iwloc=&output=embed" width="100%" height="250" style="border:0; border-radius: 0.75rem;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            
+            <a href="https://maps.app.goo.gl/o1v4tUQKt9q" target="_blank" class="inline-flex items-center justify-center px-8 py-3 bg-white border border-[#1F2937] text-[#1F2937] rounded-full font-medium hover:bg-gray-50 transition shadow-sm w-full md:w-auto">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                Open in Google Maps
+            </a>
+        </div>
+    </section>
+
+    <!-- Arrival & Gate Access -->
+    <section id="gate-access" class="py-16 px-6 bg-gradient-to-b from-transparent to-[#F59E0B]/5 relative z-10">
+        <div class="max-w-lg mx-auto text-center glass-card rounded-3xl p-8 border border-[#991B1B]/10 opacity-0 animate-fade-up delay-200" id="access-anim">
+            <h2 id="gateAccessHeading" class="text-3xl font-bold text-[#991B1B] mb-4">Arrival & Gate Access</h2>
+            <p id="gateAccessText" class="text-gray-700 leading-relaxed mb-8">We have registered the event with community security. Please present the live MyGate QR code shown below at the main gate for seamless entry.</p>
+            
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 inline-block">
+                <img src="assets/mygate-qr.png" alt="MyGate QR Code" class="w-48 h-48 object-cover rounded-xl mx-auto" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg'">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 text-center relative z-10">
+        <button id="deepam-btn" class="focus:outline-none transition-transform hover:scale-110 active:scale-95 group">
+            <img src="assets/deepam.png" alt="Light Lamp" class="w-16 h-16 mx-auto drop-shadow-md group-hover:drop-shadow-xl" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22%23F59E0B%22><path d=%22M12 2C8 6 4 9 4 14C4 18.4 7.6 22 12 22C16.4 22 20 18.4 20 14C20 9 16 6 12 2ZM12 20C9.8 20 8 18.2 8 16C8 14.2 9.6 12 12 9.5C14.4 12 16 14.2 16 16C16 18.2 14.2 20 12 20Z%22/></svg>'">
+        </button>
+        <p class="text-xs text-gray-400 mt-6 serif">Let the light guide us home.</p>
+    </footer>
+
+    <!-- FAB -->
+    <a href="#gate-access" class="fab fixed bottom-6 right-6 text-white px-6 py-3 rounded-full z-40 flex items-center justify-center group shadow-lg" aria-label="Get Gate Access">
+        <span class="font-medium" id="fabText">Get Gate Access</span>
+    </a>
+
+    <!-- Scrolling Calf Companion -->
+    <div id="calf-container">
+        <img id="calf-img" src="assets/calf-idle.png" alt="Walking Calf" onerror="this.style.display='none'">
+    </div>
+
+    <!-- Bilingual JSON Engine & Logic -->
+    <script>
+        const content = {
+            "en": {
+                "heroTitle": "Gruhapravesam",
+                "heroSubtitle": "Nagaraj, Hema & Venky Warmly Welcome You",
+                "date": "July 3rd, 2026",
+                "time": "07:02 AM",
+                "addressHeading": "Our New Home",
+                "addressDetails": "Flat No 2-407, Omsree Delight",
+                "ritualsHeading": "Sacred Rituals",
+                "ritualsText": "The morning will commence with auspicious prayers and traditional blessing rituals to invite peace and prosperity into our new dwelling.",
+                "dressCode": "Traditional attire is highly encouraged to grace the occasion.",
+                "gateAccessHeading": "Arrival & Gate Access",
+                "gateAccessText": "We have registered the event with community security. Please present the live MyGate QR code shown below at the main gate for seamless entry.",
+                "fabText": "Get Gate Access"
+            },
+            "te": {
+                "heroTitle": "గృహప్రవేశం",
+                "heroSubtitle": "నాగరాజ్, హేమ & వెంకీ మిమ్మల్ని సాదరంగా ఆహ్వానిస్తున్నారు",
+                "date": "జూలై 3, 2026",
+                "time": "ఉదయం 07:02 గంటలకు",
+                "addressHeading": "మా నూతన గృహం",
+                "addressDetails": "ఫ్లాట్ నెం 2-407, ఓం శ్రీ డిలైట్",
+                "ritualsHeading": "శుభ కార్యక్రమాలు",
+                "ritualsText": "నూతన గృహంలో శాంతి, శ్రేయస్సు కలగాలని కోరుకుంటూ ఉదయాన్నే మంగళకరమైన పూజలు మరియు సాంప్రదాయ కార్యక్రమాలు ప్రారంభమవుతాయి.",
+                "dressCode": "ఈ శుభకార్యానికి సాంప్రదాయ దుస్తులలో విచ్చేయవలసిందిగా ప్రార్థన.",
+                "gateAccessHeading": "ద్వార ప్రవేశం & పార్కింగ్",
+                "gateAccessText": "సెక్యూరిటీ వద్ద ఎటువంటి ఇబ్బంది లేకుండా ఉండటానికి, దయచేసి క్రింద ఇవ్వబడిన మైగేట్ (MyGate) QR కోడ్ను మెయిన్ గేట్ వద్ద చూపించగలరు.",
+                "fabText": "గేట్ యాక్సెస్ పొందండి"
+            }
+        };
+
+        function setLanguage(lang) {
+            localStorage.setItem('prefLang', lang);
+            
+            // Update buttons
+            document.getElementById('lang-en').className = lang === 'en' ? 'lang-btn active px-4 py-1.5 rounded-full text-sm font-medium focus:outline-none' : 'lang-btn inactive px-4 py-1.5 rounded-full text-sm font-medium focus:outline-none hover:bg-gray-100/50';
+            document.getElementById('lang-te').className = lang === 'te' ? 'lang-btn active px-4 py-1.5 rounded-full text-sm font-medium focus:outline-none' : 'lang-btn inactive px-4 py-1.5 rounded-full text-sm font-medium focus:outline-none hover:bg-gray-100/50';
+            
+            // Update text
+            const keys = Object.keys(content[lang]);
+            keys.forEach(key => {
+                const el = document.getElementById(key);
+                if (el) el.innerText = content[lang][key];
+            });
+
+            // Adjust font if telugu for better readability
+            if(lang === 'te') {
+                document.getElementById('heroTitle').style.fontFamily = "'Plus Jakarta Sans', sans-serif";
+            } else {
+                document.getElementById('heroTitle').style.fontFamily = "'Playfair Display', serif";
+            }
+        }
+
+        // Initialize Language
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('prefLang') || 'en';
+            setLanguage(savedLang);
+
+            // Trigger animations on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-up');
+                        entry.target.style.opacity = 1;
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('#rituals-anim, #access-anim').forEach(el => observer.observe(el));
+        });
+
+        // Deepam Light up interaction
+        const deepamBtn = document.getElementById('deepam-btn');
+        deepamBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-up');
+            // Play a soft sound if possible or just visual flair
+            deepamBtn.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                deepamBtn.style.transform = 'scale(1)';
+            }, 300);
+        });
+
+        // Calf Scrolling Animation Logic
+        const calfContainer = document.getElementById('calf-container');
+        const calfImg = document.getElementById('calf-img');
+        
+        const frames = [
+            'assets/calf-walk1.png',
+            'assets/calf-walk2.png',
+            'assets/calf-walk3.png',
+            'assets/calf-walk2.png'
+        ];
+        const idleFrame = 'assets/calf-idle.png';
+        
+        let isScrolling;
+        let scrollTimeout;
+        let frameIndex = 0;
+        let animInterval;
+        let lastScrollY = window.scrollY;
+
+        function startWalking() {
+            if (!animInterval) {
+                animInterval = setInterval(() => {
+                    frameIndex = (frameIndex + 1) % frames.length;
+                    calfImg.src = frames[frameIndex];
+                }, 100); // 100ms per frame for brisk walk
+            }
+        }
+
+        function stopWalking() {
+            clearInterval(animInterval);
+            animInterval = null;
+            calfImg.src = idleFrame;
+        }
+
+        window.addEventListener('scroll', () => {
+            // Directional flip
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > lastScrollY) {
+                // Scrolling down
+                calfImg.style.transform = 'scaleX(1)';
+            } else if (currentScrollY < lastScrollY) {
+                // Scrolling up
+                calfImg.style.transform = 'scaleX(-1)';
+            }
+            lastScrollY = currentScrollY;
+
+            // Start animation if not running
+            startWalking();
+            
+            // Clear previous timeout
+            window.clearTimeout(scrollTimeout);
+            
+            // Set a timeout to detect when scrolling stops
+            scrollTimeout = setTimeout(() => {
+                stopWalking();
+            }, 150);
+        }, { passive: true });
+
+        // Add fallback to base64 SVG for Calf if missing to allow immediate testing without assets
+        calfImg.onerror = function() {
+            this.onerror = null; // Prevent infinite loop
+            const svgCalf = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="%231F2937"><path d="M14,4C14,4 15,3 16,3C17,3 18,4 18,5C18,6 17.5,7 17.5,7L19.5,9.5L21,9V14L19.5,15L18,14.5V19C18,19.5 17.5,20 17,20C16.5,20 16,19.5 16,19V17H12V19C12,19.5 11.5,20 11,20C10.5,20 10,19.5 10,19V14.5L8.5,15L7,14V9L8.5,9.5L10.5,7C10.5,7 10,6 10,5C10,4 11,3 12,3C13,3 14,4 14,4ZM14.5,10.5C14.5,11.3 13.8,12 13,12C12.2,12 11.5,11.3 11.5,10.5C11.5,9.7 12.2,9 13,9C13.8,9 14.5,9.7 14.5,10.5Z"/></svg>`;
+            if(this.src.includes('idle')) this.src = svgCalf;
+            else this.src = svgCalf; // Just fallback for all frames for testing
+        };
+
+    </script>
 </body>
 </html>
